@@ -27,6 +27,10 @@ class ProgressReport
 
         $assessment = AssessmentRepository::make()->find($attemptedAssessments->first());
 
+        if (! $assessment) {
+            throw new \RuntimeException('Assessment not found.');
+        }
+
         $progressFeedback = $this->generateProgressFeedback($studentResponses);
 
         return implode(PHP_EOL, [

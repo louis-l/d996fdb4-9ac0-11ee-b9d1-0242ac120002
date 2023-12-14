@@ -1,0 +1,17 @@
+Tony Stark recently completed Numeracy assessment on 16th January 2022 10:00 AM
+He got 6 questions right out of 6. No feedback for wrong answers.
+
+Question: Which of these numbers is a prime number?
+Your answer: A with value 4
+Right answer: B with value 7
+Hint: All the incorrect answers have three or more factors
+
+Question: What is the correct sequence for mathematical operations?
+Your answer: A with value Addition, Brackets, Division, Order, Multiplication, Subtraction
+Right answer: C with value Brackets, Order, Division, Multiplication, Addition, Subtraction
+Hint: They don't call it BODMAS for nothing!
+
+Question: Which of these statements is true?
+Your answer: A with value 1 mile > 2 km
+Right answer: C with value 1 mile > 1.5 km
+Hint: 1 mile is more than 1.5 km but less than 2 km

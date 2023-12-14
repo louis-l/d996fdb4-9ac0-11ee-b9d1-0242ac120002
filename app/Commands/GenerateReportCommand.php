@@ -19,7 +19,7 @@ class GenerateReportCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'report';
+    protected $signature = 'report {studentId?} {reportType?}';
 
     /**
      * The description of the command.
@@ -30,13 +30,26 @@ class GenerateReportCommand extends Command
 
     public function handle(): void
     {
-        $this->line('Please enter the following:');
+        if (! $studentId = $this->argument('studentId')) {
+            $studentId = $this->getStudentIdInput();
+        }
+
+        if (! $student = StudentRepository::make()->find($studentId)) {
+            $this->error('Could not find student ID '.$studentId);
+            return;
+        }
+
+        if (! $reportValue = $this->argument('reportType')) {
+            $reportValue = $this->getReportTypeInput();
+        }
+
+        if (! $reportType = ReportType::tryFrom($reportValue)) {
+            $this->error('Could not find report with value '.$reportValue);
+            return;
+        }
 
         $this->line(
-            $this->generateReportFor(
-                $this->resolveStudent(),
-                $this->getReportTypeInput(),
-            )
+            $this->generateReportFor($student, $reportType)
         );
     }
 
@@ -49,18 +62,6 @@ class GenerateReportCommand extends Command
         };
     }
 
-    protected function resolveStudent(): Student
-    {
-        $studentId = $this->getStudentIdInput();
-
-        if ($student = StudentRepository::make()->find($studentId)) {
-            return $student;
-        }
-
-        $this->error('Could not find student ID '.$studentId);
-        return $this->resolveStudent();
-    }
-
     protected function getStudentIdInput(): string
     {
         $prompt = new TextPrompt(
@@ -71,7 +72,7 @@ class GenerateReportCommand extends Command
         return $prompt->prompt();
     }
 
-    protected function getReportTypeInput(): ReportType
+    protected function getReportTypeInput(): int
     {
         $prompt = new SelectPrompt(
             label: 'Report type',
@@ -79,8 +80,6 @@ class GenerateReportCommand extends Command
             required: true,
         );
 
-        $selectedValue = $prompt->prompt();
-
-        return Reporttype::tryFrom($selectedValue);
+        return (int) $prompt->prompt();
     }
 }

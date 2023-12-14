@@ -7,7 +7,6 @@ use App\Services\Repositories\StudentResponseRepository;
 use App\ValueObjects\Student;
 use App\ValueObjects\StudentResponse;
 use App\ValueObjects\StudentResponseAnswer;
-use Illuminate\Support\Collection;
 
 class FeedbackReport
 {
@@ -43,8 +42,7 @@ class FeedbackReport
                 $this->generateFeedbackSuffix($lastStudentResponse),
             ),
             '',
-            ...$this->generateWrongAnswerFeedbackCollection($lastStudentResponse)
-                ->toArray(),
+            $this->generateWrongAnswerFeedbackCollection($lastStudentResponse),
         ]);
     }
 
@@ -57,7 +55,7 @@ class FeedbackReport
         return 'Feedback for wrong answers given below';
     }
 
-    protected function generateWrongAnswerFeedbackCollection(StudentResponse $studentResponse): Collection
+    protected function generateWrongAnswerFeedbackCollection(StudentResponse $studentResponse): string
     {
         return $studentResponse->getAnswersCollection()
             ->map(function (StudentResponseAnswer $answer) {
@@ -80,9 +78,9 @@ class FeedbackReport
                     sprintf('Your answer: %s with value %s', $answeredResponse->label, $answeredResponse->value),
                     sprintf('Right answer: %s with value %s', $correctResponse->label, $correctResponse->value),
                     sprintf('Hint: %s', $question->config->hint),
-                    '',
                 ]);
             })
-            ->filter();
+            ->filter()
+            ->join(PHP_EOL.PHP_EOL);
     }
 }
