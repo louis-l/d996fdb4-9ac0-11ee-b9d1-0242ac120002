@@ -2,8 +2,8 @@
 
 namespace App\Services\Repositories;
 
-use Closure;
 use App\ValueObjects\Assessment;
+use Closure;
 
 class AssessmentRepository extends AbstractRepository
 {

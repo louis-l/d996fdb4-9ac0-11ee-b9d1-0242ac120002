@@ -2,14 +2,13 @@
 
 namespace App\Services\Repositories;
 
-use Closure;
 use App\ValueObjects\StudentResponse;
+use Closure;
 use Illuminate\Support\Collection;
 
 class StudentResponseRepository extends AbstractRepository
 {
     /**
-     * @param  string  $studentId
      * @return \Illuminate\Support\Collection<array-key, \App\ValueObjects\StudentResponse>
      */
     public function findResponsesFromStudentId(string $studentId): Collection

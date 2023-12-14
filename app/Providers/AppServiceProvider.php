@@ -12,8 +12,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         config(['logging.channels.single.path' => \Phar::running()
-            ? dirname(\Phar::running(false)) . '/desired-path/app-production.log'
-            : storage_path('logs/laravel.log')
+            ? dirname(\Phar::running(false)).'/desired-path/app-production.log'
+            : storage_path('logs/laravel.log'),
         ]);
     }
 

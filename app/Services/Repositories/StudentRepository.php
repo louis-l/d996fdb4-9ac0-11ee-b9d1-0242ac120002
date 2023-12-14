@@ -2,8 +2,8 @@
 
 namespace App\Services\Repositories;
 
-use Closure;
 use App\ValueObjects\Student;
+use Closure;
 
 class StudentRepository extends AbstractRepository
 {

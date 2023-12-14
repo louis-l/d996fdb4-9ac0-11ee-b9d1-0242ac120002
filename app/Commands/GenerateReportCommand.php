@@ -36,6 +36,7 @@ class GenerateReportCommand extends Command
 
         if (! $student = StudentRepository::make()->find($studentId)) {
             $this->error('Could not find student ID '.$studentId);
+
             return;
         }
 
@@ -45,6 +46,7 @@ class GenerateReportCommand extends Command
 
         if (! $reportType = ReportType::tryFrom($reportValue)) {
             $this->error('Could not find report with value '.$reportValue);
+
             return;
         }
 
