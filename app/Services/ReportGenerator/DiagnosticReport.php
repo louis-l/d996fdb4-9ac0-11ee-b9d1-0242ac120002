@@ -2,7 +2,6 @@
 
 namespace App\Services\ReportGenerator;
 
-use App\Enums\ReportType;
 use App\Services\Repositories\AssessmentRepository;
 use App\Services\Repositories\QuestionRepository;
 use App\Services\Repositories\StudentResponseRepository;
@@ -13,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class DiagnosticReport
 {
-    public function generate(Student $student, ReportType $reportType): string
+    public function generate(Student $student): string
     {
         $studentResponses = StudentResponseRepository::make()->findResponsesFromStudentId($student->id);
 

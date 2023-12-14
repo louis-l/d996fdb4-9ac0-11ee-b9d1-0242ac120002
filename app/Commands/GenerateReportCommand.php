@@ -44,7 +44,7 @@ class GenerateReportCommand extends Command
     protected function generateReportFor(Student $student, ReportType $reportType)
     {
         match ($reportType) {
-            ReportType::Diagnostic => $this->line((new DiagnosticReport())->generate($student, $reportType)),
+            ReportType::Diagnostic => $this->line((new DiagnosticReport())->generate($student)),
             ReportType::Progress => 1,
             ReportType::Feedback => 1,
             default => $this->error('Unknown report type')
