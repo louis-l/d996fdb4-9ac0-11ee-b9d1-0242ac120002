@@ -42,13 +42,13 @@ class DiagnosticReport
                 $reportingResponse->getScore(),
                 $reportingResponse->countTotalAnswers(),
             ),
-            ...$this->aaa($reportingResponse)
+            ...$this->groupAnswers($reportingResponse)
                 ->map(fn (array $value, string $strand) => sprintf('%s: %d out of %d correct', $strand, $value['correctAnswers'], $value['totalQuestions']))
                 ->toArray(),
         ]);
     }
 
-    protected function aaa(StudentResponse $response): Collection
+    protected function groupAnswers(StudentResponse $response): Collection
     {
         return collect($response->get('responses'))
             ->map(function (array $data) {
