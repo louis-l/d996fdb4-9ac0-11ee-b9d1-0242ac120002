@@ -7,6 +7,7 @@ use App\Services\Repositories\QuestionRepository;
 use App\Services\Repositories\StudentResponseRepository;
 use App\ValueObjects\Student;
 use App\ValueObjects\StudentResponse;
+use App\ValueObjects\StudentResponseAnswer;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -50,19 +51,16 @@ class DiagnosticReport
 
     protected function groupAnswers(StudentResponse $response): Collection
     {
-        return collect($response->get('responses'))
-            ->map(function (array $data) {
-                $questionId = Arr::get($data, 'questionId');
-                $providedAnswer = Arr::get($data, 'response');
-
-                if (! $questionBank = QuestionRepository::make()->find($questionId)) {
+        return $response->getAnswersCollection()
+            ->map(function (StudentResponseAnswer $answer) {
+                if (! $questionBank = QuestionRepository::make()->find($answer->questionId)) {
                     throw new \RuntimeException('Could not find question');
                 }
 
                 return [
                     'strand' => $questionBank->strand,
-                    'answer' => $providedAnswer,
-                    'isCorrect' => $questionBank->isAnswerCorrect($providedAnswer),
+                    'answer' => $answer->response,
+                    'isCorrect' => $questionBank->isAnswerCorrect($answer->response),
                 ];
             })
             ->groupBy('strand')
