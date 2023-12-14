@@ -4,6 +4,7 @@ namespace App\ValueObjects;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class StudentResponse
 {
@@ -42,10 +43,21 @@ class StudentResponse
         return count(Arr::get($this->data, 'responses'));
     }
 
+    public function hasAnsweredAllQuestionsCorrectly(): bool
+    {
+        return $this->getScore() === $this->countTotalAnswers();
+    }
+
     public function getStartedDate(): Carbon
     {
         $rawDate = Arr::get($this->data, 'started');
 
         return Carbon::createFromFormat('d/m/Y H:i:s', $rawDate);
+    }
+
+    public function getAnswersCollection(): Collection
+    {
+        return collect($this->get('responses'))
+            ->map(fn (array $data) => StudentResponseAnswer::make($data));
     }
 }

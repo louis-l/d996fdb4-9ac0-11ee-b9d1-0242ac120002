@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use App\Enums\ReportType;
 use App\Services\ReportGenerator\DiagnosticReport;
+use App\Services\ReportGenerator\FeedbackReport;
 use App\Services\ReportGenerator\ProgressReport;
 use App\Services\Repositories\StudentRepository;
 use App\ValueObjects\Student;
@@ -36,19 +37,20 @@ class GenerateReportCommand extends Command
     {
         $this->line('Please enter the following:');
 
-        $this->generateReportFor(
-            $this->resolveStudent(),
-            $this->getReportTypeInput(),
+        $this->line(
+            $this->generateReportFor(
+                $this->resolveStudent(),
+                $this->getReportTypeInput(),
+            )
         );
     }
 
     protected function generateReportFor(Student $student, ReportType $reportType)
     {
-        match ($reportType) {
-            ReportType::Diagnostic => $this->line((new DiagnosticReport())->generate($student)),
-            ReportType::Progress => $this->line((new ProgressReport())->generate($student)),
-            ReportType::Feedback => 1,
-            default => $this->error('Unknown report type')
+        return match ($reportType) {
+            ReportType::Diagnostic => (new DiagnosticReport())->generate($student),
+            ReportType::Progress => (new ProgressReport())->generate($student),
+            ReportType::Feedback => (new FeedbackReport())->generate($student),
         };
     }
 

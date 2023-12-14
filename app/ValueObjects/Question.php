@@ -14,7 +14,7 @@ class Question
 
     public string $strand;
 
-    public array $config;
+    public QuestionConfig $config;
 
     public static function make(array $data): static
     {
@@ -23,13 +23,18 @@ class Question
         $instance->stem = Arr::get($data, 'stem');
         $instance->type = Arr::get($data, 'type');
         $instance->strand = Arr::get($data, 'strand');
-        $instance->config = Arr::get($data, 'config');
+        $instance->config = QuestionConfig::make(Arr::get($data, 'config'));
 
         return $instance;
     }
 
     public function isAnswerCorrect(string $answer): bool
     {
-        return Arr::get($this->config, 'key') === $answer;
+        return $this->config->key === $answer;
+    }
+
+    public function findQuestionOptionById(string $id): ?QuestionOption
+    {
+        return $this->config->options->firstWhere(fn (QuestionOption $questionOption) => $questionOption->id === $id);
     }
 }
