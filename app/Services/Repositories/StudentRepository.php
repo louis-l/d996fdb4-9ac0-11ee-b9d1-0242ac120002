@@ -2,43 +2,23 @@
 
 namespace App\Services\Repositories;
 
+use Closure;
 use App\ValueObjects\Student;
-use Illuminate\Support\Collection;
 
-class StudentRepository
+class StudentRepository extends AbstractRepository
 {
-    public static function make(): static
-    {
-        return resolve(static::class);
-    }
-
-    /**
-     * @var \Illuminate\Support\Collection<array-key, \App\ValueObjects\Student>
-     */
-    protected Collection $data;
-
     public function find(string $id): ?Student
     {
         return $this->getDataCollection()->firstWhere(fn (Student $student) => $student->id === $id);
     }
 
-    /**
-     * @return \Illuminate\Support\Collection<array-key, \App\ValueObjects\Student>
-     */
-    protected function getDataCollection(): Collection
+    protected function getDataSourceFile(): string
     {
-        if (! isset($this->data)) {
-            $this->data = $this->loadDataFromJsonFile(storage_path('data/students.json'));
-        }
-
-        return $this->data;
+        return 'students.json';
     }
 
-    protected function loadDataFromJsonFile(string $filePath): Collection
+    protected function resolveDataMappingCallback(): Closure
     {
-        $fileContent = file_get_contents($filePath);
-
-        return collect(json_decode($fileContent, true))
-            ->map(fn ($data) => Student::make($data));
+        return fn ($data) => Student::make($data);
     }
 }

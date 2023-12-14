@@ -2,41 +2,24 @@
 
 namespace App\Services\Repositories;
 
+use Closure;
 use App\ValueObjects\Question;
-use Illuminate\Support\Collection;
 
-class QuestionRepository
+class QuestionRepository extends AbstractRepository
 {
-    public static function make(): static
-    {
-        return resolve(static::class);
-    }
-
-    protected Collection $data;
-
     public function find(string $id): ?Question
     {
         return $this->getDataCollection()
             ->firstWhere(fn (Question $question) => $question->id === $id);
     }
 
-    /**
-     * @return \Illuminate\Support\Collection<array-key, \App\ValueObjects\Student>
-     */
-    protected function getDataCollection(): Collection
+    protected function getDataSourceFile(): string
     {
-        if (! isset($this->data)) {
-            $this->data = $this->loadDataFromJsonFile(storage_path('data/questions.json'));
-        }
-
-        return $this->data;
+        return 'questions.json';
     }
 
-    protected function loadDataFromJsonFile(string $filePath): Collection
+    protected function resolveDataMappingCallback(): Closure
     {
-        $fileContent = file_get_contents($filePath);
-
-        return collect(json_decode($fileContent, true))
-            ->map(fn ($data) => Question::make($data));
+        return fn ($data) => Question::make($data);
     }
 }
