@@ -41,6 +41,7 @@ class DiagnosticReport
                 $reportingResponse->getScore(),
                 $reportingResponse->countTotalAnswers(),
             ),
+            '',
             ...$this->groupAnswers($reportingResponse)
                 ->map(fn (array $value, string $strand) => sprintf('%s: %d out of %d correct', $strand, $value['correctAnswers'], $value['totalQuestions']))
                 ->toArray(),
