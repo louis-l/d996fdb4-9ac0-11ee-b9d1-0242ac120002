@@ -28,12 +28,7 @@ class GenerateReportCommand extends Command
      */
     protected $description = 'Generate student report';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->line('Please enter the following:');
 
