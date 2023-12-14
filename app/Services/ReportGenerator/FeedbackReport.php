@@ -12,7 +12,7 @@ class FeedbackReport
 {
     public function generate(Student $student): string
     {
-        $studentResponses = StudentResponseRepository::make()->findResponsesFromStudentId($student->id);
+        $studentResponses = StudentResponseRepository::make()->findCompletedResponsesFromStudentId($student->id);
 
         if ($studentResponses->isEmpty()) {
             throw new \RuntimeException('Response not found.');
@@ -33,7 +33,7 @@ class FeedbackReport
                 $student->firstName,
                 $student->lastName,
                 $assessment->name,
-                $lastStudentResponse->getStartedDate()->format('jS F Y H:i A'),
+                $lastStudentResponse->getCompletedDate()->format('jS F Y H:i A'),
             ),
             sprintf(
                 'He got %d questions right out of %d. %s',

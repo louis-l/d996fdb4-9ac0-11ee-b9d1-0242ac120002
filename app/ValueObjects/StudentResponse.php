@@ -23,6 +23,11 @@ class StudentResponse
         return Arr::get($this->data, $key, $default);
     }
 
+    public function isCompleted(): bool
+    {
+        return isset($this->data['completed']) && ! empty($this->data['completed']);
+    }
+
     public function getAssessmentId(): string
     {
         return Arr::get($this->data, 'assessmentId');
@@ -51,6 +56,20 @@ class StudentResponse
     public function getStartedDate(): Carbon
     {
         $rawDate = Arr::get($this->data, 'started');
+
+        return Carbon::createFromFormat('d/m/Y H:i:s', $rawDate);
+    }
+
+    public function getAssignedDate(): Carbon
+    {
+        $rawDate = Arr::get($this->data, 'assigned');
+
+        return Carbon::createFromFormat('d/m/Y H:i:s', $rawDate);
+    }
+
+    public function getCompletedDate(): Carbon
+    {
+        $rawDate = Arr::get($this->data, 'completed');
 
         return Carbon::createFromFormat('d/m/Y H:i:s', $rawDate);
     }

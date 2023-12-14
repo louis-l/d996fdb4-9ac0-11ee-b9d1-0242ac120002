@@ -13,14 +13,14 @@ class DiagnosticReport
 {
     public function generate(Student $student): string
     {
-        $studentResponses = StudentResponseRepository::make()->findResponsesFromStudentId($student->id);
+        $studentResponses = StudentResponseRepository::make()->findCompletedResponsesFromStudentId($student->id);
 
         if ($studentResponses->isEmpty()) {
             throw new \RuntimeException('Response not found.');
         }
 
-        // TODO: Assume only reporting on 1st one
-        $reportingResponse = $studentResponses->first();
+        // TODO: Assume only reporting on latest assessment
+        $reportingResponse = $studentResponses->last();
 
         $assessment = AssessmentRepository::make()->find($reportingResponse->getAssessmentId());
 
@@ -34,7 +34,7 @@ class DiagnosticReport
                 $student->firstName,
                 $student->lastName,
                 $assessment->name,
-                $reportingResponse->getStartedDate()->format('jS F Y H:i A'),
+                $reportingResponse->getCompletedDate()->format('jS F Y H:i A'),
             ),
             sprintf(
                 'He got %d questions right out of %d. Details by strand given below:',

@@ -1,8 +1,7 @@
-Tony Stark has completed Numeracy assessment 4 times in total. Date and raw score given below:
+Tony Stark has completed Numeracy assessment 3 times in total. Date and raw score given below:
 
-Date: 16th December 2019, Raw Score: 6 out of 16
-Date: 16th December 2020, Raw Score: 10 out of 16
-Date: 16th December 2021, Raw Score: 15 out of 16
-Date: 16th January 2022, Raw Score: 6 out of 6
+Date: 14th December 2019, Raw Score: 6 out of 16
+Date: 14th December 2020, Raw Score: 10 out of 16
+Date: 14th December 2021, Raw Score: 15 out of 16
 
-Tony Stark got all answers correct in the recent completed assessment
+Tony Stark got 9 more correct in the recent completed assessment than the oldest

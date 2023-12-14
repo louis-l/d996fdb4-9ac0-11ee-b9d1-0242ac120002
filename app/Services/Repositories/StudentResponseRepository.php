@@ -11,9 +11,10 @@ class StudentResponseRepository extends AbstractRepository
     /**
      * @return \Illuminate\Support\Collection<array-key, \App\ValueObjects\StudentResponse>
      */
-    public function findResponsesFromStudentId(string $studentId): Collection
+    public function findCompletedResponsesFromStudentId(string $studentId): Collection
     {
         return $this->getDataCollection()
+            ->filter(fn (StudentResponse $studentResponse) => $studentResponse->isCompleted())
             ->filter(fn (StudentResponse $studentResponse) => $studentResponse->getStudentId() === $studentId);
     }
 

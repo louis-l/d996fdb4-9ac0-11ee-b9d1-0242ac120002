@@ -12,7 +12,7 @@ class ProgressReport
 {
     public function generate(Student $student): string
     {
-        $studentResponses = StudentResponseRepository::make()->findResponsesFromStudentId($student->id);
+        $studentResponses = StudentResponseRepository::make()->findCompletedResponsesFromStudentId($student->id);
 
         if ($studentResponses->isEmpty()) {
             throw new \RuntimeException('Response not found.');
@@ -45,7 +45,7 @@ class ProgressReport
             ...$studentResponses
                 ->map(fn (StudentResponse $studentResponse) => sprintf(
                     'Date: %s, Raw Score: %d out of %d',
-                    $studentResponse->getStartedDate()->format('jS F Y'),
+                    $studentResponse->getAssignedDate()->format('jS F Y'),
                     $studentResponse->getScore(),
                     $studentResponse->countTotalAnswers(),
                 ))
@@ -64,12 +64,12 @@ class ProgressReport
             return '';
         }
 
+        /** @var \App\ValueObjects\StudentResponse $firstAttempt */
+        $firstAttempt = $studentResponses->first();
         /** @var \App\ValueObjects\StudentResponse $lastAttempt */
         $lastAttempt = $studentResponses->last();
-        /** @var \App\ValueObjects\StudentResponse $secondLastAttempt */
-        $secondLastAttempt = $studentResponses->skip($studentResponses->count() - 2)->first();
 
-        $countMoreCorrectAnswer = $lastAttempt->getScore() - $secondLastAttempt->getScore();
+        $countMoreCorrectAnswer = $lastAttempt->getScore() - $firstAttempt->getScore();
 
         if ($countMoreCorrectAnswer >= 1) {
             return sprintf(
@@ -78,6 +78,7 @@ class ProgressReport
             );
         }
 
+        // In case all attempts were max score
         if ($lastAttempt->getScore() === $lastAttempt->countTotalAnswers()) {
             return 'got all answers correct in the recent completed assessment';
         }
