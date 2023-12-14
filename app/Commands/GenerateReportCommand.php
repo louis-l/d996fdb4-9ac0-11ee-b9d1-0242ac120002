@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Enums\ReportType;
+use App\Services\ReportGenerator\DiagnosticReport;
 use App\Services\Repositories\StudentRepository;
 use App\ValueObjects\Student;
 use Laravel\Prompts\SelectPrompt;
@@ -43,7 +44,7 @@ class GenerateReportCommand extends Command
     protected function generateReportFor(Student $student, ReportType $reportType)
     {
         match ($reportType) {
-            ReportType::Diagnostic => $this->line(''),
+            ReportType::Diagnostic => $this->line((new DiagnosticReport())->generate($student, $reportType)),
             ReportType::Progress => 1,
             ReportType::Feedback => 1,
             default => $this->error('Unknown report type')
