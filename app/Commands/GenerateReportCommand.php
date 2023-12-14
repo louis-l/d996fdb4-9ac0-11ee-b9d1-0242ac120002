@@ -45,7 +45,7 @@ class GenerateReportCommand extends Command
         );
     }
 
-    protected function generateReportFor(Student $student, ReportType $reportType)
+    protected function generateReportFor(Student $student, ReportType $reportType): string
     {
         return match ($reportType) {
             ReportType::Diagnostic => (new DiagnosticReport())->generate($student),
