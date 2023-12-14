@@ -1,0 +1,6 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "yoda_style": true
+    }
+}
