@@ -21,7 +21,7 @@ class FeedbackReport
         /** @var \App\ValueObjects\StudentResponse $lastStudentResponse */
         $lastStudentResponse = $studentResponses->last();
 
-        $assessment = AssessmentRepository::make()->find($lastStudentResponse->getAssessmentId());
+        $assessment = AssessmentRepository::make()->find($lastStudentResponse->assessmentId);
 
         if (! $assessment) {
             throw new \RuntimeException('Assessment not found.');

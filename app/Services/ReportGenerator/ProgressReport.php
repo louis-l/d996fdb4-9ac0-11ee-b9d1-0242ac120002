@@ -18,7 +18,7 @@ class ProgressReport
             throw new \RuntimeException('Response not found.');
         }
 
-        $attemptedAssessments = $studentResponses->map(fn (StudentResponse $response) => $response->getAssessmentId());
+        $attemptedAssessments = $studentResponses->map(fn (StudentResponse $response) => $response->assessmentId);
 
         // TODO: Assume each student can only take 1 assessment
         if ($attemptedAssessments->unique()->count() >= 2) {

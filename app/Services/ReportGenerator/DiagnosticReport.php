@@ -22,7 +22,7 @@ class DiagnosticReport
         // TODO: Assume only reporting on latest assessment
         $reportingResponse = $studentResponses->last();
 
-        $assessment = AssessmentRepository::make()->find($reportingResponse->getAssessmentId());
+        $assessment = AssessmentRepository::make()->find($reportingResponse->assessmentId);
 
         if (! $assessment) {
             throw new \RuntimeException('Assessment not found.');

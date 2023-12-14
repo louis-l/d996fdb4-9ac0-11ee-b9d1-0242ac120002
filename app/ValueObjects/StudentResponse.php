@@ -8,12 +8,15 @@ use Illuminate\Support\Collection;
 
 class StudentResponse
 {
+    public string $assessmentId;
+
     protected array $data;
 
     public static function make(array $data): static
     {
         $instance = new static();
         $instance->data = $data;
+        $instance->assessmentId = Arr::get($data, 'assessmentId');
 
         return $instance;
     }
@@ -26,11 +29,6 @@ class StudentResponse
     public function isCompleted(): bool
     {
         return isset($this->data['completed']) && ! empty($this->data['completed']);
-    }
-
-    public function getAssessmentId(): string
-    {
-        return Arr::get($this->data, 'assessmentId');
     }
 
     public function getStudentId(): string
@@ -51,13 +49,6 @@ class StudentResponse
     public function hasAnsweredAllQuestionsCorrectly(): bool
     {
         return $this->getScore() === $this->countTotalAnswers();
-    }
-
-    public function getStartedDate(): Carbon
-    {
-        $rawDate = Arr::get($this->data, 'started');
-
-        return Carbon::createFromFormat('d/m/Y H:i:s', $rawDate);
     }
 
     public function getAssignedDate(): Carbon
