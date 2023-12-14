@@ -3,12 +3,10 @@
 namespace App\Services\ReportGenerator;
 
 use App\Services\Repositories\AssessmentRepository;
-use App\Services\Repositories\QuestionRepository;
 use App\Services\Repositories\StudentResponseRepository;
 use App\ValueObjects\Student;
 use App\ValueObjects\StudentResponse;
 use App\ValueObjects\StudentResponseAnswer;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class DiagnosticReport
@@ -53,14 +51,12 @@ class DiagnosticReport
     {
         return $response->getAnswersCollection()
             ->map(function (StudentResponseAnswer $answer) {
-                if (! $questionBank = QuestionRepository::make()->find($answer->questionId)) {
-                    throw new \RuntimeException('Could not find question');
-                }
+                $question = $answer->toQuestionObject();
 
                 return [
-                    'strand' => $questionBank->strand,
+                    'strand' => $question->strand,
                     'answer' => $answer->response,
-                    'isCorrect' => $questionBank->isAnswerCorrect($answer->response),
+                    'isCorrect' => $question->isAnswerCorrect($answer->response),
                 ];
             })
             ->groupBy('strand')

@@ -2,6 +2,7 @@
 
 namespace App\ValueObjects;
 
+use App\Services\Repositories\QuestionRepository;
 use Illuminate\Support\Arr;
 
 class StudentResponseAnswer
@@ -17,5 +18,14 @@ class StudentResponseAnswer
         $instance->response = Arr::get($data, 'response');
 
         return $instance;
+    }
+
+    public function toQuestionObject(): Question
+    {
+        if (! $questionBank = QuestionRepository::make()->find($this->questionId)) {
+            throw new \RuntimeException('Could not find question');
+        }
+
+        return $questionBank;
     }
 }
